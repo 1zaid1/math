@@ -20,11 +20,14 @@ function isdigit(x) {
     return ('0' <= x && x <= '9');
 }
 function fix(s) {
+    s = s.toLowerCase();
     let nigga = false;
     let pp = "";
+
     for (let i = 0; i < s.length; i++) {
         if (s[i] != ' ') pp += s[i];
     }
+
     s = pp;
     let c;
 
@@ -191,6 +194,8 @@ function inter(a, b) {
 }
 function addE() {
     var s = prompt("Add an equation: ", "");
+    s = s.replace("<=", '\u2264');
+    s = s.replace(">=", '\u2265');
     console.log(s);
     fix(s);
     if (eq.length != last) {
