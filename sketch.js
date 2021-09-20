@@ -1,4 +1,4 @@
-let res = 25, eq = [], clrs = [], p = [], font, last = 0, ind;
+let res=25, eq = [], clrs = [], p = [], font, last = 0, clr, factor = 50;
 
 function preload() {
     font = loadFont('./Rubik-font.ttf');
@@ -14,12 +14,15 @@ function setup() {
     clrs.push(color(205, 205, 0)); // yellow
 
     textSize(20);
-    ind = int(Math.random()*clrs.length);
+    clr = clrs[int(Math.random()*clrs.length)];
+    factor = 1.0;
+    res = 25;
 }
 
 function isdigit(x) {
     return ('0' <= x && x <= '9');
 }
+
 function fix(s) {
     s = s.toLowerCase();
     let nigga = false;
@@ -79,7 +82,7 @@ function fix(s) {
         if (cm==2) b = float(v[i]);
     };
 
-    eq.push(new equation(m, a, b, c, clrs[ind]));
+    eq.push(new equation(m, a, b, c, clr));
 
     console.log('a: ', a);
     console.log('b: ', b);
@@ -106,64 +109,64 @@ function equation(m, a, b, c, clr) {
         stroke(clr);
 
         if (!a) {
-            if (c != '>' && c != '<') line (-b/m * res, -1000*res, -b/m * res, 1000*res);
+            if (c != '>' && c != '<') line (-b/m * res/factor, -1000000*res/factor, -b/m * res/factor, 1000000*res/factor);
             else {
                 for (let i = -height/2; i < height/2; i+=10) {
-                    line(-b/m * res, i, -b/m * res, i+10);
+                    line(-b/m * res/factor, i, -b/m * res/factor, i+10);
                     i += 10;
                 }
             }
 
             noStroke();
-            vertex(-b/m * res, -1000*res);
-            vertex(-b/m * res, 1000*res);
+            vertex(-b/m * res/factor, -1000000*res/factor);
+            vertex(-b/m * res/factor, 1000000*res/factor);
 
             if (c == '\u2265' || c == '>') {
-                vertex(1000*res, -1000*res);
-                vertex(1000*res, 1000*res);
+                vertex(1000000*res/factor, -1000000*res/factor);
+                vertex(1000000*res/factor, 1000000*res/factor);
             }
 
             if (c == '\u2264' || c == '<') {
-                vertex(-1000*res, -1000*res);
-                vertex(-1000*res, 1000*res);
+                vertex(-1000000*res/factor, -1000000*res/factor);
+                vertex(-1000000*res/factor, 1000000*res/factor);
             }
         } else {
-            if (c != '>' && c != '<') line(-1000*res, -this.f(-1000)*res, 1000*res, -this.f(1000)*res);
+            if (c != '>' && c != '<') line(-1000000*res/factor, -this.f(-1000000)*res/factor, 1000000*res/factor, -this.f(1000000)*res/factor);
             else {
                 for (let i = -width/2; i < width/2; i += 10) {
-                    line(i, -this.f(i/res)*res, i+10, -this.f((i+10)/res)*res);
+                    line(i, -this.f(i/res/factor)*res/factor, i+10, -this.f((i+10)/res/factor)*res/factor);
                     i += 10;
                 }
             }
 
             noStroke();
-            vertex(-1000*res, -this.f(-1000)*res);
-            vertex(1000*res, -this.f(1000)*res);
+            vertex(-1000000*res/factor, -this.f(-1000000)*res/factor);
+            vertex(1000000*res/factor, -this.f(1000000)*res/factor);
             if (m < 0) {
                 if (c == '\u2265' || c == '>') {
-                    vertex(1000*res, -1000*res);
+                    vertex(1000000*res/factor, -1000000*res/factor);
                 }
 
                 if (c == '\u2264' || c == '<') {
-                    vertex(-1000*res, 1000*res);
+                    vertex(-1000000*res/factor, 1000000*res/factor);
                 }
             } else if (m > 0) {
                 if (c == '\u2265' || c == '>') {
-                    vertex(-1000*res, -1000*res);
+                    vertex(-1000000*res/factor, -1000000*res/factor);
                 }
 
                 if (c == '\u2264' || c == '<') {
-                    vertex(1000*res, 1000*res);
+                    vertex(1000000*res/factor, 1000000*res/factor);
                 }
             } else {
                 if (c == '\u2265' || c == '>') {
-                    vertex(-1000*res, -1000*res);
-                    vertex(1000*res, -1000*res);
+                    vertex(-1000000*res/factor, -1000000*res/factor);
+                    vertex(1000000*res/factor, -1000000*res/factor);
                 }
 
                 if (c == '\u2264' || c == '<') {
-                    vertex(-1000*res, 1000*res);
-                    vertex(1000*res, 1000*res);
+                    vertex(-1000000*res/factor, 1000000*res/factor);
+                    vertex(1000000*res/factor, 1000000*res/factor);
                 }
             }
         }
@@ -235,6 +238,18 @@ function idk() {
 
     document.getElementById("cum").innerHTML = "Intersections: " + pp;
 }
+function changeFactor() {
+    var s = prompt("Factor: ", "");
+    factor = float(s);
+}
+function changeRes() {
+    var s = prompt("Resulotion: ", "");
+    res = float(s);
+}
+function colorstuff() {
+    var s = prompt("Resulotion: ", "");
+    clr = color(s);
+}
 
 function draw() {
     background(255);
@@ -266,11 +281,11 @@ function draw() {
     //~~~~~~~~~~~~~points~~~~~~~~~~~~
     fill(0);
     noStroke();
-    let mn = 1000000.0, ind = 0;
+    let mn = 1000000000.0, ind = 0;
     for (let i = 0; i < p.length; i++) {
-        ellipse(p[i].x*res, -p[i].y*res, 5);
-        if (dist(mouseX-width/2, mouseY-height/2, p[i].x*res, -p[i].y*res) < mn) {
-            mn = dist(mouseX-width/2, mouseY-height/2, p[i].x*res, -p[i].y*res);
+        ellipse(p[i].x*res/factor, -p[i].y*res/factor, 5);
+        if (dist(mouseX-width/2, mouseY-height/2, p[i].x*res/factor, -p[i].y*res/factor) < mn) {
+            mn = dist(mouseX-width/2, mouseY-height/2, p[i].x*res/factor, -p[i].y*res/factor);
             ind = i;
         }
     }
@@ -278,10 +293,10 @@ function draw() {
     if (p.length) {
         if (mn <= 20) {
             fill(0);
-            let w = font.textBounds("("+p[ind].x+', ' + p[ind].y+")", p[ind].x*res, -p[ind].y*res);
+            let w = font.textBounds("("+p[ind].x+', ' + p[ind].y+")", p[ind].x*res/factor, -p[ind].y*res/factor);
             rect(w.x-5, w.y-5, w.w+10, w.h+10);
             fill(255);
-            text("("+p[ind].x+', ' + p[ind].y+")", p[ind].x*res-3, -p[ind].y*res-3);
+            text("("+p[ind].x+', ' + p[ind].y+")", p[ind].x*res/factor-3, -p[ind].y*res/factor-3);
         }
     }
 }
