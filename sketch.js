@@ -1,4 +1,4 @@
-let res = 25, eq = [], clrs = [], p = [], font, last = 0;
+let res = 25, eq = [], clrs = [], p = [], font, last = 0, ind;
 
 function preload() {
     font = loadFont('./Rubik-font.ttf');
@@ -14,6 +14,7 @@ function setup() {
     clrs.push(color(205, 205, 0)); // yellow
 
     textSize(20);
+    ind = int(Math.random()*clrs.length);
 }
 
 function isdigit(x) {
@@ -78,7 +79,7 @@ function fix(s) {
         if (cm==2) b = float(v[i]);
     };
 
-    eq.push(new equation(m, a, b, c, clrs[int(Math.random()*clrs.length)]));
+    eq.push(new equation(m, a, b, c, clrs[ind]));
 
     console.log('a: ', a);
     console.log('b: ', b);
@@ -208,6 +209,7 @@ function addE() {
 
         last = eq.length;
     }
+
     idk();
 }
 function rmE() {
