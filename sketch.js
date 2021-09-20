@@ -109,29 +109,30 @@ function equation(m, a, b, c, clr) {
         stroke(clr);
 
         if (!a) {
-            if (c != '>' && c != '<') line (-b/m * res/factor, -1000000*res/factor, -b/m * res/factor, 1000000*res/factor);
+            if (c != '>' && c != '<') line (-b/m * res/factor, -1000*res/factor, -b/m * res/factor, 1000*res/factor);
             else {
                 for (let i = -height/2; i < height/2; i+=10) {
                     line(-b/m * res/factor, i, -b/m * res/factor, i+10);
                     i += 10;
                 }
             }
-
+            push();
             noStroke();
-            vertex(-b/m * res/factor, -1000000*res/factor);
-            vertex(-b/m * res/factor, 1000000*res/factor);
+            vertex(-b/m * res/factor, -1000*res/factor);
+            vertex(-b/m * res/factor, 1000*res/factor);
 
             if (c == '\u2265' || c == '>') {
-                vertex(1000000*res/factor, -1000000*res/factor);
-                vertex(1000000*res/factor, 1000000*res/factor);
+                vertex(1000*res/factor, -1000*res/factor);
+                vertex(1000*res/factor, 1000*res/factor);
             }
 
             if (c == '\u2264' || c == '<') {
-                vertex(-1000000*res/factor, -1000000*res/factor);
-                vertex(-1000000*res/factor, 1000000*res/factor);
+                vertex(-1000*res/factor, -1000*res/factor);
+                vertex(-1000*res/factor, 1000*res/factor);
             }
+            pop();
         } else {
-            if (c != '>' && c != '<') line(-1000000*res/factor, -this.f(-1000000)*res/factor, 1000000*res/factor, -this.f(1000000)*res/factor);
+            if (c != '>' && c != '<') line(-1000*res/factor, -this.f(-1000)*res/factor, 1000*res/factor, -this.f(1000)*res/factor);
             else {
                 for (let i = -width/2; i < width/2; i += 10) {
                     line(i, -this.f(i/res/factor)*res/factor, i+10, -this.f((i+10)/res/factor)*res/factor);
@@ -139,36 +140,38 @@ function equation(m, a, b, c, clr) {
                 }
             }
 
+            push();
             noStroke();
-            vertex(-1000000*res/factor, -this.f(-1000000)*res/factor);
-            vertex(1000000*res/factor, -this.f(1000000)*res/factor);
+            vertex(-1000*res/factor, -this.f(-1000)*res/factor);
+            vertex(1000*res/factor, -this.f(1000)*res/factor);
             if (m < 0) {
                 if (c == '\u2265' || c == '>') {
-                    vertex(1000000*res/factor, -1000000*res/factor);
+                    vertex(1000*res/factor, -1000*res/factor);
                 }
 
                 if (c == '\u2264' || c == '<') {
-                    vertex(-1000000*res/factor, 1000000*res/factor);
+                    vertex(-1000*res/factor, 1000*res/factor);
                 }
             } else if (m > 0) {
                 if (c == '\u2265' || c == '>') {
-                    vertex(-1000000*res/factor, -1000000*res/factor);
+                    vertex(-1000*res/factor, -1000*res/factor);
                 }
 
                 if (c == '\u2264' || c == '<') {
-                    vertex(1000000*res/factor, 1000000*res/factor);
+                    vertex(1000*res/factor, 1000*res/factor);
                 }
             } else {
                 if (c == '\u2265' || c == '>') {
-                    vertex(-1000000*res/factor, -1000000*res/factor);
-                    vertex(1000000*res/factor, -1000000*res/factor);
+                    vertex(-1000*res/factor, -1000*res/factor);
+                    vertex(1000*res/factor, -1000*res/factor);
                 }
 
                 if (c == '\u2264' || c == '<') {
-                    vertex(-1000000*res/factor, 1000000*res/factor);
-                    vertex(1000000*res/factor, 1000000*res/factor);
+                    vertex(-1000*res/factor, 1000*res/factor);
+                    vertex(1000*res/factor, 1000*res/factor);
                 }
             }
+            pop();
         }
 
         endShape();
@@ -281,7 +284,7 @@ function draw() {
     //~~~~~~~~~~~~~points~~~~~~~~~~~~
     fill(0);
     noStroke();
-    let mn = 1000000000.0, ind = 0;
+    let mn = 1000000.0, ind = 0;
     for (let i = 0; i < p.length; i++) {
         ellipse(p[i].x*res/factor, -p[i].y*res/factor, 5);
         if (dist(mouseX-width/2, mouseY-height/2, p[i].x*res/factor, -p[i].y*res/factor) < mn) {
